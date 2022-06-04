@@ -80,12 +80,48 @@ We update all versions on a regular basis. Once the `support <https://github.com
 | 16     | Current                 | April 2024       |
 +--------+-------------------------+------------------+
 
+Run your node application in the background
+===========================================
+
+To run your application as a service you need to create a supervisord service. 
+To create a new service, place a ``.ini`` file for your node service in ``~/etc/services.d/``. For example ``my-daemon.ini``
+
+.. code-block:: bash
+  [program:my-daemon]
+  directory=/home/isabell/my-node-app
+  command=npm run start
+  autostart=true
+  autorestart=true
+  environment=NODE_ENV=production
+  
+Afterwards, ask ``supervisord`` to look for new ``.ini`` files:
+
+.. code-block:: bash
+
+ [isabell@stardust ~]$ supervisorctl reread
+ my-daemon: available
+
+And then start your daemon:
+
+.. code-block:: bash
+
+ [isabell@stardust ~]$ supervisorctl update
+ my-daemon: added process group
+
+.. include:: includes/supervisord.rst
+
+----
+
 Connection to webserver
 =======================
 
 .. include:: includes/web-backend.rst
 
 ----
+
+
+Available Package Managers
+==========================
 
 .. _npm:
 
@@ -95,6 +131,16 @@ npm
 ``npm``, or the `node package manager`, is used to install and manage additional packages. We have preconfigured ``npm`` to install packages to your :doc:`home <basics-home>` when using the global (``-g``) option.
 
 ----
+
+.. _yarn:
+
+yarn
+===
+
+``yarn``, is an alternaive package manager. It is used to install and manage packages of your application. 
+
+----
+
 
 .. _npx:
 
